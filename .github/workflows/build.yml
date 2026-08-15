@@ -17,8 +17,17 @@ jobs:
       with:
         go-version: '1.21'
 
+    - name: Cài đặt Trình biên dịch Đồ họa (GCC)
+      uses: msys2/setup-msys2@v2
+      with:
+        msys2-location: 'C:\msys64'
+        install: >-
+          mingw-w64-x86_64-gcc
+
     - name: Biên dịch file .exe
       run: |
+        $env:PATH = "C:\msys64\mingw64\bin;" + $env:PATH
+        $env:CGO_ENABLED = "1"
         go mod tidy
         go build -ldflags="-H windowsgui" -o OutlierFinder.exe main.go
 
